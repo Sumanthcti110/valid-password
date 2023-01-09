@@ -1,0 +1,96 @@
+<!-- 99electronic.com simple password validator -->
+<!-- there is jquery library used, but it is not necessary-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script   src="https://code.jquery.com/jquery-3.6.1.slim.min.js"></script><!-- this is required-->
+    <script   src="validator.js"></script><!-- this is required-->
+    <title>password validator test</title>
+</head>
+<body style="font-family: Tahoma;">
+<div style="margin-top:50px;text-align: center;">
+
+
+
+
+    <!-- START OF THE ACTUAL FORM ***************************************************************-->
+    <div>
+        <!-- where password validators shows results START-->
+        <div class="text-right text-form-small p-err-container" style="margin-top:5px;visibility:hidden;">
+            <span id="p-err-a">[a-z]</span>
+            <span id="p-err-b">[A-Z]</span>
+            <span id="p-err-n">[0-9]</span>
+            <span id="p-err-s">spec.char</span>
+            <span id="p-err-l">min. 8</span>
+        </div>
+        <!-- where password validators shows results END-->
+        <label>new secret password:</label>
+        <br>
+        <input type="password" id="pass1" class="passwords" style="height:25px;width:200px;margin-top:10px;border:2px solid gray;">
+    </div>
+    <div style="margin-top:10px">
+        <!-- where password MATCH validators shows results START (p-err-m can be inside of first validator display if desired) -->
+        <div class="text-right text-form-small p-err-container" style="margin-top:5px;visibility:hidden;">
+            <span id="p-err-m">must match</span>
+        </div>
+        <!-- where password MATCH validators shows results END-->
+        <label>same password again:</label>
+        <br>
+        <input type="password" id="pass2" class="passwords" style="height:25px;width:200px;margin-top:10px;border:2px solid gray;">
+    </div>
+    <div>
+        <!-- button we would change the style is here #submit-->
+        <button id="submit" disabled style="margin-top:25px;width:200px;">submit</button>
+    </div>
+    <!-- END OF THE ACTUAL FORM ***************************************************************-->
+
+
+
+
+</div>
+<script>
+    $(()=>{
+        //SET OPTIONS
+        let options = {
+            pass1:'pass1',          //pass1 id
+            pass2:'pass2',          //pass2 id
+            element:'p-err',        //element id/class in form used
+            type:0,                 //0[letter,capital,number,spec],1[letter,capital and number],2[number,letter]
+            helpers:true,           //bool hide/show form helpers when everything is empty
+                                    //CALL THIS TO ENABLE/DISABLE SUBMIT or anything based on i=true/false
+            callback:(i, password)=>{
+                $('#submit')
+                    .prop('disabled', i)
+                    //OPTIONAL SUBMIT CLICK BUTTON CALLBACK
+                    .off('click')
+                    .on('click', ()=>{
+                        submit_form(password);
+                    });
+            },
+            //CALL THIS TO CHANGE PASS1 CSS or anything based on i=true/false
+            callback_pass1:(i)=>{
+                //change input style when valid password
+                $('#pass1')
+                    .css('border','2px solid ' + (i?'green':'gray'));
+            },
+            //CALL THIS TO CHANGE PASS1 CSS or anything based on i=true/false
+            callback_pass2:(i)=>{
+                //change input style when valid password
+                $('#pass2')
+                    .css('border','2px solid ' + (i?'green':'gray'));
+            }
+        }
+
+        //CALL FUNCTION ITSELF
+        validatePassword(options);
+
+        //SUBMIT FORM WITH PASSWORD
+        let submit_form = (password)=>{
+            //password contains password value
+            alert('valid password: ' + password);
+        }
+    });
+</script>
+</body>
+</html>
